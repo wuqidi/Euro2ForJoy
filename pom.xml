@@ -60,6 +60,13 @@
             <version>${jinput.version}</version>
             <classifier>natives-all</classifier>
         </dependency>
+
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>1.29</version>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/net.java.jinput/jinput-platform
         <dependency>
             <groupId>net.java.jinput</groupId>

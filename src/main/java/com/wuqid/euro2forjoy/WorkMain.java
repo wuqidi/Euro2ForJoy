@@ -1,19 +1,26 @@
 package com.wuqid.euro2forjoy;
 
 import com.wuqid.euro2forjoy.config.JInputConfig;
+import com.wuqid.euro2forjoy.config.KeyMappingConfig;
 import com.wuqid.euro2forjoy.config.SystemConfig;
 import com.wuqid.euro2forjoy.operationPanel.PopPanel;
+import com.wuqid.euro2forjoy.pojo.AnalogCompareBO;
+import com.wuqid.euro2forjoy.pojo.ButtonCompareBO;
 import com.wuqid.euro2forjoy.pojo.ControllerBO;
+import com.wuqid.euro2forjoy.pojo.KeyMappingBO;
+import com.wuqid.euro2forjoy.service.MappingServer;
 import com.wuqid.euro2forjoy.util.Logcommon;
 import lombok.extern.log4j.Log4j;
 import net.java.games.input.Controller;
 import net.java.games.input.ControllerEnvironment;
 import net.java.games.input.JInputJoyServer;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -53,7 +60,6 @@ public class WorkMain {
     }*/
 
 
-
     private static void sleep(int millis) {
         try {
             Thread.sleep(millis);
@@ -62,12 +68,15 @@ public class WorkMain {
         }
     }
 
+    private static final ThreadLocal<ControllerBO> THREAD_LOCAL_CON_BO = new ThreadLocal<>();
+
     public static void main(String[] args) {
         String methodName = "Euro2ForJoy 主程序 ";
         try {
             //***********设置运行参数***************
             SystemConfig.setInitProperty();
             JInputConfig.setConfig();
+            final Map<String, KeyMappingBO> keyMapping = KeyMappingConfig.getKeyMapping();// key:4AJto/PJzxG/x0RFU1QAAA==
 
             //*************************************
             ControllerEnvironment defaultEnvironment = ControllerEnvironment.getDefaultEnvironment();
@@ -94,8 +103,20 @@ public class WorkMain {
 
                 for (Controller controller : controllers) {
                     controller.poll();
-                    ControllerBO controllerBO = JInputJoyServer.getControllerBO(controller.getComponents());
-                    Logcommon.info(log, methodName + "监听按键", Logcommon.TAG.INPUT,controllerBO);
+                    final ControllerBO controllerBO = JInputJoyServer.getControllerBO(controller.getComponents());
+                    //Logcommon.info(log, methodName + "监听按键", Logcommon.TAG.INPUT,controllerBO);
+                    ControllerBO controllerBOTL = THREAD_LOCAL_CON_BO.get();
+                    if (ObjectUtils.isNotEmpty(controllerBOTL)) {
+                        AnalogCompareBO analogCompareBO = MappingServer.queryDifferentOfAnalog(controllerBO, controllerBOTL);
+                        if (!analogCompareBO.isEmpty()) {//摇杆有变动
+                            MappingServer.exeMapping(analogCompareBO,keyMapping);
+                        }
+                        List<ButtonCompareBO> buttonCompareBOS = MappingServer.queryDifferentOfButton(controllerBO, controllerBOTL);
+                        if (CollectionUtils.isNotEmpty(buttonCompareBOS)) {//按钮有变动
+                            MappingServer.exeMapping(buttonCompareBOS,keyMapping);
+                        }
+                    }
+                    THREAD_LOCAL_CON_BO.set(controllerBO);
                 }
                 sleep(3000);//20
             }
@@ -104,6 +125,4 @@ public class WorkMain {
             Logcommon.error(log, methodName, e);
         }
     }
-
-
 }

@@ -1,6 +1,7 @@
 package net.java.games.input;
 
 import com.alibaba.fastjson.JSON;
+import com.wuqid.euro2forjoy.pojo.AnalogBO;
 import com.wuqid.euro2forjoy.pojo.ComponenBO;
 import com.wuqid.euro2forjoy.pojo.ControllerBO;
 import com.wuqid.euro2forjoy.util.Logcommon;
@@ -111,8 +112,9 @@ public class JInputJoyServer {
                 }
             }
         }
-        ControllerBO.Analog analog = result.getAnalog();
-        analog.setDirection(ControllerBO.Analog.Direction.getDirection(componenBOX, componenBOY));
+        AnalogBO analog = result.getAnalog();
+        analog.setDirection(AnalogBO.Direction.getDirection(componenBOX, componenBOY));
+        analog.setGUID(componenBOX.getGUID());
         return result;
     }
 

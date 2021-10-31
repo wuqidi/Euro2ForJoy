@@ -51,6 +51,9 @@ public class Logcommon {
         }
         return "空";
     }
+    public static void info(Logger log, String methodName, TAG tag, Object objects) {
+        log.info("[" + methodName + "]-" + tag.desc + ">>" + getStr(objects) + "");
+    }
 
     public static void info(Logger log, String methodName, TAG tag, Object... objects) {
         log.info("[" + methodName + "]-" + tag.desc + ">>" + getStr(objects) + "");

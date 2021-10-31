@@ -1,7 +1,7 @@
 package com.wuqid.euro2forjoy.demo;
 
 import com.wuqid.euro2forjoy.util.Logcommon;
-import com.wuqid.euro2forjoy.util.SystemProperty;
+import com.wuqid.euro2forjoy.util.PropertyUtil;
 import lombok.extern.log4j.Log4j;
 import net.java.games.input.*;
 
@@ -94,7 +94,7 @@ public class JoyInputDemo {
         String methodName = "Euro2ForJoy 主程序";
         try {
 
-            SystemProperty.set("net.java.games.input.librarypath", new File(ClassLoader.getSystemResource("dll").toURI()).getAbsolutePath());//这里只能设置绝对路径
+            PropertyUtil.setSystem("net.java.games.input.librarypath", new File(ClassLoader.getSystemResource("dll").toURI()).getAbsolutePath());//这里只能设置绝对路径
             //"classpath:*resources/dll"
             // System.getProperty("java.class.path")
             //new File("src/main/resources/dll").getAbsolutePath()
