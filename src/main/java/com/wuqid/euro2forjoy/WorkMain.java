@@ -1,16 +1,17 @@
 package com.wuqid.euro2forjoy;
 
+import com.wuqid.euro2forjoy.config.JInputConfig;
+import com.wuqid.euro2forjoy.config.SystemConfig;
 import com.wuqid.euro2forjoy.operationPanel.PopPanel;
 import com.wuqid.euro2forjoy.pojo.ControllerBO;
 import com.wuqid.euro2forjoy.util.Logcommon;
-import com.wuqid.euro2forjoy.util.SystemProperty;
 import lombok.extern.log4j.Log4j;
-import net.java.games.input.*;
+import net.java.games.input.Controller;
+import net.java.games.input.ControllerEnvironment;
+import net.java.games.input.JInputJoyServer;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.File;
-import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -51,25 +52,7 @@ public class WorkMain {
                 controller.getPortType().toString() + "-";
     }*/
 
-    private static void setInitProperty() throws Exception {
-        SystemProperty.set("net.java.games.input.librarypath", new File(ClassLoader.getSystemResource("dll").toURI()).getAbsolutePath());//这里只能设置绝对路径
-        SystemProperty.set("jinput.loglevel", "FINEST");//java.util.logging.Level
 
-        try {
-            // 读取配置文件
-            ClassLoader cl = WorkMain.class.getClassLoader();
-            InputStream inputStream;
-            if (cl != null) {
-                inputStream = cl.getResourceAsStream("logging.properties");
-            } else {
-                inputStream = ClassLoader.getSystemResourceAsStream("loggging.properties");
-            }
-            java.util.logging.LogManager logManager = java.util.logging.LogManager.getLogManager();
-            logManager.readConfiguration(inputStream);
-        } catch (Exception e) {
-            Logcommon.error(log, "加载Java日志配置", e);
-        }
-    }
 
     private static void sleep(int millis) {
         try {
@@ -83,9 +66,11 @@ public class WorkMain {
         String methodName = "Euro2ForJoy 主程序 ";
         try {
             //***********设置运行参数***************
-            setInitProperty();
-            ControllerEnvironment defaultEnvironment = ControllerEnvironment.getDefaultEnvironment();
+            SystemConfig.setInitProperty();
+            JInputConfig.setConfig();
+
             //*************************************
+            ControllerEnvironment defaultEnvironment = ControllerEnvironment.getDefaultEnvironment();
             boolean joystickInfoPop = true;
             while (true) {
                 List<Controller> controllers = getJoyStickControllers(defaultEnvironment);
