@@ -3,7 +3,8 @@
 
 ## 功能
 
-* 识别joystick按键位，并进行键盘映射(暂时无法配置)
+>* 识别joystick按键位，并进行键盘映射
+>* 映射文件:resources/keymapping.yml
 
 ## 瞎JB忙
 * 有时间就写点
@@ -16,3 +17,4 @@
 * https://github.com/born2snipe/gamepad4j
 * https://github.com/jinput/jinput
 * https://github.com/ihmcrobotics/jinput
+* https://blog.csdn.net/xingjiarong/article/details/38688537

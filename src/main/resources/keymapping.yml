@@ -1,25 +1,56 @@
-#一号操作板
+#always
+#twice
+#move
+
+#########################一号操作板#########################
 #按钮
 controller1:
   button:
     gUID: "8AJto/PJzxG/x0RFU1QAAA=="
-    button_1: "w"
-    button_2: "w"
-    button_3: "w"
-    button_4: "w"
-    button_5: "w"
-    button_6: "w"
-    button_7: "w"
-    button_8: "w"
-    button_9: "w"
-    button_10: "w"
-    button_11: "w"
-    button_12: "w"
+    button_1: "twice_w"
+    button_2: "e"
+    button_3: "twice_f"
+    button_4: "o"
+    button_5: "v"
+    button_6: "u"
+    button_7: "always_enter"
+    button_8: "t"
+    button_9: "x"
+    button_10: "x"
+    button_11: "p"
+    button_12:
   #摇杆
   analog:
     gUID: "4AJto/PJzxG/x0RFU1QAAA=="
     center:
+    #space
     up: "space"
     down: "space"
-    left: "space"
-    right: "space"
+    left: "move_left"
+    right: "move_right"
+
+#########################二号操作板#########################
+#按钮
+controller2:
+  button:
+    gUID: ""
+    button_1: "o"
+    button_2: "k"
+    button_3: "twice_s"
+    button_4: "twice_d"
+    button_5: "j"
+    button_6: "k"
+    button_7: "l"
+    button_8: "y"
+    button_9: "z"
+    button_10: "r"
+    button_11: "q"
+    button_12: "a"
+  #摇杆
+  analog:
+    gUID: ""
+    center:
+    up:
+    down:
+    left:
+    right:

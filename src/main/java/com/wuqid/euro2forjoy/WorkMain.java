@@ -3,7 +3,7 @@ package com.wuqid.euro2forjoy;
 import com.wuqid.euro2forjoy.config.JInputConfig;
 import com.wuqid.euro2forjoy.config.KeyMappingConfig;
 import com.wuqid.euro2forjoy.config.SystemConfig;
-import com.wuqid.euro2forjoy.operationPanel.PopPanel;
+import com.wuqid.euro2forjoy.swing.PopPanel;
 import com.wuqid.euro2forjoy.pojo.AnalogCompareBO;
 import com.wuqid.euro2forjoy.pojo.ButtonCompareBO;
 import com.wuqid.euro2forjoy.pojo.ControllerBO;
@@ -118,7 +118,7 @@ public class WorkMain {
                     }
                     THREAD_LOCAL_CON_BO.set(controllerBO);
                 }
-                sleep(3000);//20
+                sleep(SystemConfig.REFRESH_MS);
             }
         } catch (Exception e) {
             PopPanel.showError(e.toString(), "报错");

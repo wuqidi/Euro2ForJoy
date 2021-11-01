@@ -16,6 +16,10 @@ import java.io.File;
  */
 @Log4j
 public class SystemConfig {
+    public static int REFRESH_MS = 50;//最小20
+    public static int STEP_SIZE = 100;//像素，影响鼠标移动速度
+    public static int ALWAYS_TIME = 30;//模拟一直按着键 线程执行间隔时间
+
     public static void setInitProperty() throws Exception {
         PropertyUtil.setSystem("net.java.games.input.librarypath", new File(ClassLoader.getSystemResource("dll").toURI()).getAbsolutePath());//这里只能设置绝对路径
         PropertyUtil.setSystem("jinput.loglevel", "FINEST");//java.util.logging.Level

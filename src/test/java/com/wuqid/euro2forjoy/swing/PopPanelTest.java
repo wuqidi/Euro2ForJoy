@@ -1,4 +1,4 @@
-package com.wuqid.euro2forjoy.operationPanel;
+package com.wuqid.euro2forjoy.swing;
 
 import org.junit.jupiter.api.Test;
 
