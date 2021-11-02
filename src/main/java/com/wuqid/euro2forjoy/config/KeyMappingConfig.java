@@ -1,9 +1,10 @@
 package com.wuqid.euro2forjoy.config;
 
 import com.wuqid.euro2forjoy.pojo.KeyMappingBO;
-import com.wuqid.euro2forjoy.util.Logcommon;
-import com.wuqid.euro2forjoy.util.PropertyUtil;
+import com.wuqid.euro2forjoy.common.Logcommon;
+import com.wuqid.euro2forjoy.common.PropertyUtil;
 import lombok.extern.log4j.Log4j;
+import org.apache.commons.lang3.ObjectUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,7 +20,20 @@ import java.util.Map;
  */
 @Log4j
 public class KeyMappingConfig {
-    public static Map<String,KeyMappingBO> getKeyMapping() {
+    private static volatile KeyMappingConfig instance;
+
+    public static KeyMappingConfig getInstance(){
+        if(ObjectUtils.isEmpty(instance)){
+            synchronized (KeyMappingConfig.class){
+                if(ObjectUtils.isEmpty(instance)){
+                    instance = new KeyMappingConfig();
+                }
+            }
+        }
+        return instance;
+    }
+
+    public Map<String,KeyMappingBO> getKeyMapping() {
         String methodName = "获取键盘映射关系";
         Map<String,KeyMappingBO> result = new HashMap<>();
         try {

@@ -1,4 +1,4 @@
-package com.wuqid.euro2forjoy.util;
+package com.wuqid.euro2forjoy.common;
 
 import com.alibaba.fastjson.JSON;
 import lombok.extern.log4j.Log4j;

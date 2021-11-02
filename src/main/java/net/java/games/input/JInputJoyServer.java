@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.wuqid.euro2forjoy.pojo.AnalogBO;
 import com.wuqid.euro2forjoy.pojo.ComponenBO;
 import com.wuqid.euro2forjoy.pojo.ControllerBO;
-import com.wuqid.euro2forjoy.util.Logcommon;
+import com.wuqid.euro2forjoy.common.Logcommon;
 import lombok.extern.log4j.Log4j;
 import net.java.games.input.Component.Identifier.Axis;
 

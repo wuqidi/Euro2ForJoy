@@ -16,6 +16,6 @@ class KeyMappingConfigTest {
 
     @Test
     void getKeyMapping() {
-        System.out.println(JSON.toJSONString(KeyMappingConfig.getKeyMapping()));
+        System.out.println(JSON.toJSONString(KeyMappingConfig.getInstance().getKeyMapping()));
     }
 }

@@ -1,6 +1,6 @@
 package com.wuqid.euro2forjoy.config;
 
-import com.wuqid.euro2forjoy.util.Logcommon;
+import com.wuqid.euro2forjoy.common.Logcommon;
 import lombok.extern.log4j.Log4j;
 
 import java.io.InputStream;

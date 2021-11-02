@@ -2,7 +2,7 @@ package com.wuqid.euro2forjoy.service;
 
 import com.wuqid.euro2forjoy.pojo.ButtonActType;
 import com.wuqid.euro2forjoy.swing.PopPanel;
-import com.wuqid.euro2forjoy.util.Logcommon;
+import com.wuqid.euro2forjoy.common.Logcommon;
 import lombok.extern.log4j.Log4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;

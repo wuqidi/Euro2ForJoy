@@ -1,7 +1,7 @@
 package com.wuqid.euro2forjoy.service;
 
 import com.wuqid.euro2forjoy.pojo.*;
-import com.wuqid.euro2forjoy.util.Logcommon;
+import com.wuqid.euro2forjoy.common.Logcommon;
 import lombok.extern.log4j.Log4j;
 import org.apache.commons.lang3.ObjectUtils;
 
@@ -75,14 +75,6 @@ public class MappingServer {
             }
         });
     }
-
-    class PRESS_KEY implements Runnable {
-        @Override
-        public void run() {
-
-        }
-    }
-
 
     public static AnalogCompareBO queryDifferentOfAnalog(ControllerBO newCon, ControllerBO oldCon) {
         String methodName = "查询不同摇杆";
