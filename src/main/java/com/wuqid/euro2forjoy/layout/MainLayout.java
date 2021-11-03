@@ -13,7 +13,7 @@ import java.net.URL;
 /**
  * <dl>
  * <dt>Description：</dt>
- * <dd>主窗体</dd>
+ * <dd>主窗体 https://www.cnblogs.com/mrdz/p/7716643.html </dd>
  * </dl>
  *
  * @author: 泥猴桃
@@ -28,6 +28,7 @@ public class MainLayout {
         f.setSize(400, 300);
         setIcon(f);
         setCenter(f);
+        f.setBackground(Color.WHITE);
 
         f.setLayout(null);
         //f.setLocationRelativeTo(null);
@@ -50,7 +51,7 @@ public class MainLayout {
         w.setLocation((int) (x - w.getWidth()) / 2, (int) (y - w.getHeight()) / 2);
     }
 
-    private static final URL url = MainLayout.class.getResource("/img/icon.png");
+    private static final URL url = MainLayout.class.getResource("/img/icon.jpg");
 
     private static void setWelcomePage(JFrame f) {
         try {
@@ -59,13 +60,16 @@ public class MainLayout {
             a.setModal(true);
             setIcon(a);
             a.setTitle("welcome~");
-            a.setSize(500, 300);
-            /*JLabel content = new JLabel();
+            a.setSize(600, 600);
+            JLabel content = new JLabel();
             content.setBorder(BorderFactory.createLineBorder(Color.red));
-            content.setBounds(0, 0, 74, 66);
-            content.setIcon(imageIcon);
+            content.setBounds(150, 150, 300, 300);
+
+            Toolkit toolkit = Toolkit.getDefaultToolkit();
+            Image image = toolkit.createImage(new File(MainLayout.class.getResource("/img/loading2.gif").toURI()).getAbsolutePath());
+            content.setIcon(new ImageIcon(image));
             content.setVisible(true);
-            a.add(content);*/
+            a.add(content);
 
             JLabel writer = new JLabel("writer:泥猴桃");//每个字像素宽度20
             writer.setBounds(400, 230, 80, 20);
@@ -77,6 +81,10 @@ public class MainLayout {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private static void setLoading(){
+        //600 * 600
     }
 
     private static void setIcon(Window w) {
