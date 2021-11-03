@@ -28,4 +28,10 @@ public class PopPanel {
         int showConfirmDialog = JOptionPane.showConfirmDialog(null, msg, title, JOptionPane.YES_NO_OPTION);
         return showConfirmDialog<1;
     }
+
+    public static boolean showContent(String content, String title){
+        JOptionPane.showInputDialog(null,content,title, JOptionPane.INFORMATION_MESSAGE);
+        int showConfirmDialog = JOptionPane.showConfirmDialog(null, content, title, JOptionPane.YES_NO_OPTION);
+        return showConfirmDialog<1;
+    }
 }

@@ -19,5 +19,7 @@ class PopPanelTest {
         PopPanel.showWarning("你好","警告");
         boolean b = PopPanel.showConfirm("你好", "选择");
         System.out.println(b);
+
+        PopPanel.showContent("你好","警告");
     }
 }
