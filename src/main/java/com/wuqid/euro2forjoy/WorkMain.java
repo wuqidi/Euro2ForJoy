@@ -5,6 +5,7 @@ import com.wuqid.euro2forjoy.common.ThreadPoolServer;
 import com.wuqid.euro2forjoy.config.JInputConfig;
 import com.wuqid.euro2forjoy.config.KeyMappingConfig;
 import com.wuqid.euro2forjoy.config.SystemConfig;
+import com.wuqid.euro2forjoy.layout.MainLayout;
 import com.wuqid.euro2forjoy.pojo.AnalogCompareBO;
 import com.wuqid.euro2forjoy.pojo.ButtonCompareBO;
 import com.wuqid.euro2forjoy.pojo.ControllerBO;
@@ -20,6 +21,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.swing.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -50,7 +52,7 @@ public class WorkMain {
         Controller[] controllers = controllerEnvironment.getControllers();
         if (controllers.length == 0) {
             Logcommon.info(log, methodName, Logcommon.TAG.INPUT, controllers);
-            PopPanel.showError("不存在任何控制器", "错误");
+            PopPanel.showError(null, "不存在任何控制器", "错误");
             exit();//如果为0则退出 一个都无法获取
         }
         return Arrays.stream(controllers).filter(v -> (
@@ -87,11 +89,12 @@ public class WorkMain {
             ControllerEnvironment defaultEnvironment = ControllerEnvironment.getDefaultEnvironment();
             boolean joystickInfoPop = true;
             //目前jinput提供的方法 无法实时获取硬件设备插入状态。例如：软件启动后，插入无法识别。导致下面实时弹窗无效，留着以备不时之需。
+            JFrame mainPage = MainLayout.getMainPage();
             while (true) {
                 List<Controller> controllers = getJoyStickControllers(defaultEnvironment);
                 if (CollectionUtils.isEmpty(controllers)) {
-                    PopPanel.showWarning("没有发现JoyStick，插了么？", "警告");
-                    if (!PopPanel.showConfirm("等待JoyStick插入", "确认一下~")) {
+                    PopPanel.showWarning(mainPage, "没有发现JoyStick，插了么？", "警告");
+                    if (!PopPanel.showConfirm(mainPage, "等待JoyStick插入", "确认一下~")) {
                         exit();//选择了 否
                     } else {
                         sleep(5000);//等待5s 继续获取
@@ -102,23 +105,22 @@ public class WorkMain {
 
                 if (joystickInfoPop) {
                     Logcommon.info(log, methodName + "获取joystick", Logcommon.TAG.INPUT, controllers);
-                    PopPanel.showInfo("扫描：" + controllers.size() + "台", "joystick信息");
-                    //todo 增加设备信息弹窗复制
+                    PopPanel.showInfo(mainPage, "扫描：" + controllers.size() + "台", "joystick信息");
+                    //增加设备信息弹窗复制
+                    MainLayout.setInternalContentForMainPage(mainPage, controllers);
                     joystickInfoPop = false;
                     /* Arrays.stream(controllers).forEach(v -> { PopPanel.showInfo(getJoystickInfo(v), "joystick信息");});*/
                 }
 
-                if (CollectionUtils.isNotEmpty(controllers)) {
-                    CountDownLatch countDownLatch = new CountDownLatch(controllers.size());
-                    for (Controller controller : controllers) {
-                        controllerExe.execute(new MappingExecute(controller, keyMapping, countDownLatch));
-                    }
-                    countDownLatch.await(REFRESH_MS - 5, TimeUnit.MILLISECONDS);
+                CountDownLatch countDownLatch = new CountDownLatch(controllers.size());
+                countDownLatch.await(REFRESH_MS - 5, TimeUnit.MILLISECONDS);
+                for (Controller controller : controllers) {
+                    controllerExe.execute(new MappingExecute(controller, keyMapping, countDownLatch));
                 }
                 sleep(REFRESH_MS);//控制刷新频率
             }
         } catch (Exception e) {
-            PopPanel.showError(e.toString(), "报错");
+            PopPanel.showError(null, e.toString(), "报错");
             Logcommon.error(log, methodName, e);
         }
     }

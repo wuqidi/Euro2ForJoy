@@ -18,3 +18,6 @@
 * https://github.com/jinput/jinput
 * https://github.com/ihmcrobotics/jinput
 * https://blog.csdn.net/xingjiarong/article/details/38688537
+
+###抱怨
+* 相同设备GUID相同！！！！！我TM怎么区分？真是一下回到解放前，怪自己啊~

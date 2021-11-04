@@ -13,13 +13,13 @@ import org.junit.jupiter.api.Test;
  */
 class PopPanelTest {
     @Test
-    public void test1(){
-        PopPanel.showInfo("你好","欢迎");
-        PopPanel.showError("你好","报错");
-        PopPanel.showWarning("你好","警告");
-        boolean b = PopPanel.showConfirm("你好", "选择");
+    public void test1() {
+        PopPanel.showInfo(null, "你好", "欢迎");
+        PopPanel.showError(null, "你好", "报错");
+        PopPanel.showWarning(null, "你好", "警告");
+        boolean b = PopPanel.showConfirm(null, "你好", "选择");
         System.out.println(b);
 
-        PopPanel.showContent("你好","警告");
+        PopPanel.showContent(null, "你好", "警告");
     }
 }

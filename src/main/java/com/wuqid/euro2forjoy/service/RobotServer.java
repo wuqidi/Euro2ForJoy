@@ -34,7 +34,7 @@ public class RobotServer {
             ROBOT.setAutoDelay(REFRESH_MS - 10);
             ROBOT.setAutoWaitForIdle(true);
         } catch (Exception e) {
-            PopPanel.showError("鼠标、键盘存在配置问题！", "配置故障");
+            PopPanel.showError(null,"鼠标、键盘存在配置问题！", "配置故障");
             Logcommon.error(log, methodName, e);
             System.exit(0);
         }
