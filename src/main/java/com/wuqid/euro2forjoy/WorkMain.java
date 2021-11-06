@@ -31,8 +31,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import static com.wuqid.euro2forjoy.config.SystemConfig.CONTROLLER_NUMS;
-import static com.wuqid.euro2forjoy.config.SystemConfig.REFRESH_MS;
+import static com.wuqid.euro2forjoy.config.SystemConfig.*;
 
 /**
  * <dl>
@@ -64,14 +63,6 @@ public class WorkMain {
         System.exit(0);
     }
 
-    private static void sleep(int millis) {
-        try {
-            Thread.sleep(millis);
-        } catch (Exception e) {
-            Logcommon.error(log, "线程休眠", e);
-        }
-    }
-
     private static final Map<String, ControllerBO> RECORD_LAST_STATUS = new ConcurrentHashMap<>(CONTROLLER_NUMS);//记录控制器上一次状态
 
     public static void main(String[] args) {
@@ -93,19 +84,19 @@ public class WorkMain {
             while (true) {
                 List<Controller> controllers = getJoyStickControllers(defaultEnvironment);
                 if (CollectionUtils.isEmpty(controllers)) {
-                    PopPanel.showWarning(mainPage, "没有发现JoyStick，插了么？", "警告");
-                    if (!PopPanel.showConfirm(mainPage, "等待JoyStick插入", "确认一下~")) {
+                    PopPanel.showWarning(mainPage, "没有发现"+Joystick_name+"，插了么？", "警告");
+                    if (!PopPanel.showConfirm(mainPage, "等待"+Joystick_name+"插入", "确认一下~")) {
                         exit();//选择了 否
                     } else {
-                        sleep(5000);//等待5s 继续获取
+                        ThreadPoolServer.sleep(LOOP_GET_CONTROLLER_SLEEP);//等待5s 继续获取
                         joystickInfoPop = true;
                         continue;
                     }
                 }
 
                 if (joystickInfoPop) {
-                    Logcommon.info(log, methodName + "获取joystick", Logcommon.TAG.INPUT, controllers);
-                    PopPanel.showInfo(mainPage, "扫描：" + controllers.size() + "台", "joystick信息");
+                    Logcommon.info(log, methodName + "获取"+Joystick_name, Logcommon.TAG.INPUT, controllers);
+                    PopPanel.showInfo(mainPage, "扫描：" + controllers.size() + "台", Joystick_name+"信息");
                     //增加设备信息弹窗复制
                     MainLayout.setInternalContentForMainPage(mainPage, controllers);
                     joystickInfoPop = false;
@@ -117,7 +108,7 @@ public class WorkMain {
                 for (Controller controller : controllers) {
                     controllerExe.execute(new MappingExecute(controller, keyMapping, countDownLatch));
                 }
-                sleep(REFRESH_MS);//控制刷新频率
+                ThreadPoolServer.sleep(REFRESH_MS);//控制刷新频率
             }
         } catch (Exception e) {
             PopPanel.showError(null, e.toString(), "报错");
@@ -156,6 +147,7 @@ public class WorkMain {
                     }
                 }
                 RECORD_LAST_STATUS.put(controllerBO.getButton_1().getGUID(), controllerBO);
+
                 countDownLatch.countDown();
             } catch (Exception e) {
                 Logcommon.error(log, "多线程执行控制映射", e);

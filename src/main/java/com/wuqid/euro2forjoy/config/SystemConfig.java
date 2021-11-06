@@ -22,6 +22,7 @@ public class SystemConfig {
     public static final int STEP_SIZE = 100;//像素，影响鼠标移动速度
     public static final int ALWAYS_TIME = 30;//模拟一直按着键 线程执行间隔时间
     public static final int CONTROLLER_NUMS = 2;//控制器数量
+    public static final int LOOP_GET_CONTROLLER_SLEEP = 5000;//循环获取控制器间隔
     public static URI IMG_FILE_URI;
     public static URI DLL_FILE_URI;
 

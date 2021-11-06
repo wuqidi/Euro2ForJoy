@@ -29,4 +29,12 @@ public class ThreadPoolServer {
     public static ThreadPoolExecutor getControllerExe() {
         return ControllerExe.controllerExecutor;
     }
+
+    public static void sleep(int millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (Exception e) {
+            Logcommon.error(log, "线程休眠", e);
+        }
+    }
 }
