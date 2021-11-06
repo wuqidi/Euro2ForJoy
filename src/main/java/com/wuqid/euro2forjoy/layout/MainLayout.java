@@ -1,6 +1,7 @@
 package com.wuqid.euro2forjoy.layout;
 
 import com.wuqid.euro2forjoy.common.Logcommon;
+import com.wuqid.euro2forjoy.config.SystemConfig;
 import com.wuqid.euro2forjoy.pojo.ControllerBO;
 import lombok.Data;
 import lombok.extern.log4j.Log4j;
@@ -107,7 +108,7 @@ public class MainLayout {
             a.setModal(true);
             setIcon(a);
             a.setTitle("welcome~");
-            ImageIcon image = new ImageIcon(Toolkit.getDefaultToolkit().createImage( "./img/eurologo.jpg"));
+            ImageIcon image = new ImageIcon(Toolkit.getDefaultToolkit().createImage( SystemConfig.WORK_HOME+"img/eurologo.jpg"));
             a.setSize(image.getIconWidth() + 16, image.getIconHeight() + 60);
             a.setLayout(new BorderLayout(0, 0));//水平间距 垂直间距
 
@@ -144,7 +145,7 @@ public class MainLayout {
     private static void setIcon(Window w) {
         try {
             Toolkit toolkit = Toolkit.getDefaultToolkit();
-            Image image = toolkit.createImage("./img/icon.jpg");
+            Image image = toolkit.createImage(SystemConfig.WORK_HOME+"img/icon.jpg");
             w.setIconImage(image);
         } catch (Exception e) {
             Logcommon.error(log, "Layout-设置Icon", e);
