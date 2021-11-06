@@ -16,26 +16,32 @@ import java.util.Map;
  */
 @Data
 public class KeyMappingBO {
+    private Integer controllerNum;
     private Button button = new Button();
     private Analog analog = new Analog();
 
-    public static Map<String,KeyMappingBO> getInstance(Map<String,Map<String,String>> config){
-        Map<String,KeyMappingBO> result = new HashMap<>(2);
-        KeyMappingBO analogMapping = new KeyMappingBO();
-        KeyMappingBO buttonMapping = new KeyMappingBO();
+    private static final String KEY = "controller%d";
+
+    public static String getKey(int controllerNum){
+        return String.format(KEY,controllerNum);
+    }
+
+    public static Map<String,KeyMappingBO> getInstance(String controllerNum,Map<String,Map<String,String>> config){
+        Map<String,KeyMappingBO> result = new HashMap<>(1);
+        KeyMappingBO keyMappingBO = new KeyMappingBO();
 
         Map<String, String> analogConfig = config.get("analog");
-        Analog analog = analogMapping.getAnalog();
+        Analog analog = keyMappingBO.getAnalog();
         analog.setGUID(analogConfig.get("gUID"));
         analog.setCenter(analogConfig.get("center"));
         analog.setUp(analogConfig.get("up"));
         analog.setDown(analogConfig.get("down"));
         analog.setLeft(analogConfig.get("left"));
         analog.setRight(analogConfig.get("right"));
-        result.put(analogConfig.get("gUID"),analogMapping);
 
         Map<String, String> buttonConfig = config.get("button");
-        Button button = buttonMapping.getButton();
+        Button button = keyMappingBO.getButton();
+        button.setName(buttonConfig.get("name"));
         button.setGUID(buttonConfig.get("gUID"));
         button.setButton_1(buttonConfig.get("button_1"));
         button.setButton_2(buttonConfig.get("button_2"));
@@ -49,12 +55,13 @@ public class KeyMappingBO {
         button.setButton_10(buttonConfig.get("button_10"));
         button.setButton_11(buttonConfig.get("button_11"));
         button.setButton_12(buttonConfig.get("button_12"));
-        result.put(buttonConfig.get("gUID"),buttonMapping);
+        result.put(controllerNum,keyMappingBO);
         return result;
     }
 
     @Data
     public static class Button{
+        private String name;
         private String gUID;
         private String button_1;
         private String button_2;

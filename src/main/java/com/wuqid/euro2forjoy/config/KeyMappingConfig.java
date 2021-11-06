@@ -38,7 +38,7 @@ public class KeyMappingConfig {
         Map<String,KeyMappingBO> result = new HashMap<>();
         try {
             Map<String, Map<String, Map<String,String>>> yml = PropertyUtil.getYml("keymapping.yml");
-            yml.forEach((k, v) -> result.putAll(KeyMappingBO.getInstance(v)));
+            yml.forEach((k, v) -> result.putAll(KeyMappingBO.getInstance(k,v)));
         } catch (Exception e) {
             Logcommon.error(log, methodName, e);
         }
