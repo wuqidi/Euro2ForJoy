@@ -42,7 +42,7 @@ public class RobotServer {
 
     public static void moveAndPress(String key){
         if(StringUtils.isNotEmpty(key)){
-            if(key.contains(ButtonActType.move.name())){
+            if(key.contains(ButtonActType.move.getTag())){
                 mouseMove(key);
             }else{
                 pressATUO(key);

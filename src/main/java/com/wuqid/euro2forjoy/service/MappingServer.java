@@ -44,10 +44,10 @@ public class MappingServer {
                 String key = button.getKey(v.getName());// 键盘映射按键
                 //Logcommon.info(log, methodName, Logcommon.TAG.INPUT, v.isSwitchOff_new(), v.isSwitchOff_old());
                 //Logcommon.info(log, methodName + "键盘：", Logcommon.TAG.OUTPUT, key);
-                if (key.contains(ButtonActType.twice.name())) {// 两次识别
+                if (key.contains(ButtonActType.twice.getTag())) {// 两次识别
                     //通电按键
                     RobotServer.pressATUO(key);
-                } else if (key.contains(ButtonActType.always.name())) {
+                } else if (key.contains(ButtonActType.always.getTag())) {
                     //加油按键
                     if (v.isSwitchOff_new()) {
                         Thread thread = new Thread(() -> {
