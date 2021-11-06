@@ -1,14 +1,19 @@
 package net.java.games.input;
 
 import com.alibaba.fastjson.JSON;
+import com.wuqid.euro2forjoy.common.Logcommon;
 import com.wuqid.euro2forjoy.pojo.AnalogBO;
 import com.wuqid.euro2forjoy.pojo.ComponenBO;
 import com.wuqid.euro2forjoy.pojo.ControllerBO;
-import com.wuqid.euro2forjoy.common.Logcommon;
+import com.wuqid.euro2forjoy.swing.PopPanel;
 import lombok.extern.log4j.Log4j;
 import net.java.games.input.Component.Identifier.Axis;
+import org.apache.commons.lang3.StringUtils;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 /**
  * <dl>
@@ -21,6 +26,20 @@ import java.util.Locale;
  */
 @Log4j
 public class JInputJoyServer {
+
+    public static List<Controller> getJoyStickControllers(ControllerEnvironment controllerEnvironment,String Joystick_name) {
+        String methodName = "获取控制器";
+        Controller[] controllers = controllerEnvironment.getControllers();
+        if (controllers.length == 0) {
+            Logcommon.info(log, methodName, Logcommon.TAG.INPUT, controllers);
+            PopPanel.showError(null, "不存在任何控制器", "错误");
+            System.exit(0);//如果为0则退出 一个都无法获取
+        }
+        return Arrays.stream(controllers).filter(v -> (
+                StringUtils.isNotEmpty(v.getName())
+                        && v.getName().contains(Joystick_name))).collect(Collectors.toList());
+    }
+
     public static boolean isDIComponentClass(Component component) {
         return component instanceof DIComponent;
     }

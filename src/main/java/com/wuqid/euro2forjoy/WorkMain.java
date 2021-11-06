@@ -19,17 +19,14 @@ import net.java.games.input.ControllerEnvironment;
 import net.java.games.input.JInputJoyServer;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 import static com.wuqid.euro2forjoy.config.SystemConfig.*;
 
@@ -46,18 +43,7 @@ import static com.wuqid.euro2forjoy.config.SystemConfig.*;
 public class WorkMain {
     private static final String Joystick_name = "Joystick";
 
-    private static List<Controller> getJoyStickControllers(ControllerEnvironment controllerEnvironment) {
-        String methodName = "获取控制器";
-        Controller[] controllers = controllerEnvironment.getControllers();
-        if (controllers.length == 0) {
-            Logcommon.info(log, methodName, Logcommon.TAG.INPUT, controllers);
-            PopPanel.showError(null, "不存在任何控制器", "错误");
-            exit();//如果为0则退出 一个都无法获取
-        }
-        return Arrays.stream(controllers).filter(v -> (
-                StringUtils.isNotEmpty(v.getName())
-                        && v.getName().contains(Joystick_name))).collect(Collectors.toList());
-    }
+
 
     private static void exit() {
         System.exit(0);
@@ -82,7 +68,7 @@ public class WorkMain {
             //目前jinput提供的方法 无法实时获取硬件设备插入状态。例如：软件启动后，插入无法识别。导致下面实时弹窗无效，留着以备不时之需。
             JFrame mainPage = MainLayout.getMainPage();
             while (true) {
-                List<Controller> controllers = getJoyStickControllers(defaultEnvironment);
+                List<Controller> controllers = JInputJoyServer.getJoyStickControllers(defaultEnvironment,Joystick_name);
                 if (CollectionUtils.isEmpty(controllers)) {
                     PopPanel.showWarning(mainPage, "没有发现"+Joystick_name+"，插了么？", "警告");
                     if (!PopPanel.showConfirm(mainPage, "等待"+Joystick_name+"插入", "确认一下~")) {
