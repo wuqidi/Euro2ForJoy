@@ -9,10 +9,7 @@ import net.java.games.input.JInputJoyServer;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
 import java.util.List;
-
-import static com.wuqid.euro2forjoy.config.SystemConfig.IMG_FILE_URI;
 
 /**
  * <dl>
@@ -27,7 +24,6 @@ import static com.wuqid.euro2forjoy.config.SystemConfig.IMG_FILE_URI;
 @Log4j
 @Data
 public class MainLayout {
-    private static final String imgPath = new File(IMG_FILE_URI).getAbsolutePath() + File.separator;
     private static final int w = 1000;
     private static final int h = 800;
     private static JPanel innerPanel = new JPanel();
@@ -36,7 +32,7 @@ public class MainLayout {
         JFrame mainPage = new JFrame("Euro2Joy");
         mainPage.setSize(w, h);
         setIcon(mainPage);
-        //setWelcomePage(mainPage);
+        setWelcomePage(mainPage);
         setCenter(mainPage);
         mainPage.setBackground(Color.LIGHT_GRAY);
         mainPage.setLayout(new BorderLayout(0, 0));
@@ -63,7 +59,7 @@ public class MainLayout {
                 panel.add(BorderLayout.WEST, new JLabel(controller.getName()));
 
                 JPanel panelRight = new JPanel();
-                panelRight.setBorder(BorderFactory.createLineBorder(Color.red));
+                //panelRight.setBorder(BorderFactory.createLineBorder(Color.red));
                 ControllerBO controllerBO = JInputJoyServer.getControllerBO(controller.getComponents());
                 String button = controllerBO.getButton_1().getGUID();
                 String analog = controllerBO.getAnalog().getGUID();
@@ -111,7 +107,7 @@ public class MainLayout {
             a.setModal(true);
             setIcon(a);
             a.setTitle("welcome~");
-            ImageIcon image = new ImageIcon(Toolkit.getDefaultToolkit().createImage(imgPath + "eurologo.jpg"));
+            ImageIcon image = new ImageIcon(Toolkit.getDefaultToolkit().createImage( "./img/eurologo.jpg"));
             a.setSize(image.getIconWidth() + 16, image.getIconHeight() + 60);
             a.setLayout(new BorderLayout(0, 0));//水平间距 垂直间距
 
@@ -148,7 +144,7 @@ public class MainLayout {
     private static void setIcon(Window w) {
         try {
             Toolkit toolkit = Toolkit.getDefaultToolkit();
-            Image image = toolkit.createImage(imgPath + "icon.jpg");
+            Image image = toolkit.createImage("./img/icon.jpg");
             w.setIconImage(image);
         } catch (Exception e) {
             Logcommon.error(log, "Layout-设置Icon", e);

@@ -44,7 +44,6 @@ public class WorkMain {
     private static final String Joystick_name = "Joystick";
 
 
-
     private static void exit() {
         System.exit(0);
     }
@@ -59,19 +58,21 @@ public class WorkMain {
             JInputConfig.setConfig();
 
             //***********设置配置参数***************
-            final Map<String, KeyMappingBO> keyMapping = KeyMappingConfig.getInstance().getKeyMapping();// key:4AJto/PJzxG/x0RFU1QAAA==
+            KeyMappingConfig instance = KeyMappingConfig.getInstance();
+            final Map<String, KeyMappingBO> keyMapping = instance.getKeyMapping();// key:
 
             //***********业务逻辑执行***************
             ThreadPoolExecutor controllerExe = ThreadPoolServer.getControllerExe();//controllerExe.shutDown() 结束进程直接推出
             ControllerEnvironment defaultEnvironment = ControllerEnvironment.getDefaultEnvironment();
             boolean joystickInfoPop = true;
-            //目前jinput提供的方法 无法实时获取硬件设备插入状态。例如：软件启动后，插入无法识别。导致下面实时弹窗无效，留着以备不时之需。
             JFrame mainPage = MainLayout.getMainPage();
             while (true) {
-                List<Controller> controllers = JInputJoyServer.getJoyStickControllers(defaultEnvironment,Joystick_name);
+                List<Controller> controllers = JInputJoyServer.getJoyStickControllers(defaultEnvironment, Joystick_name);
                 if (CollectionUtils.isEmpty(controllers)) {
-                    PopPanel.showWarning(mainPage, "没有发现"+Joystick_name+"，插了么？", "警告");
-                    if (!PopPanel.showConfirm(mainPage, "等待"+Joystick_name+"插入", "确认一下~")) {
+                    //目前jinput提供的方法 无法实时获取硬件设备插入状态。例如：软件启动后，插入无法识别。导致下面实时弹窗无效，留着以备不时之需。
+                    //JInput作者也回复游戏之前需要插入设备，后期应该不会有更新了。
+                    PopPanel.showWarning(mainPage, "没有发现" + Joystick_name + "，插了么？", "警告");
+                    if (!PopPanel.showConfirm(mainPage, "等待" + Joystick_name + "插入", "确认一下~")) {
                         exit();//选择了 否
                     } else {
                         ThreadPoolServer.sleep(LOOP_GET_CONTROLLER_SLEEP);//等待5s 继续获取
@@ -81,8 +82,8 @@ public class WorkMain {
                 }
 
                 if (joystickInfoPop) {
-                    Logcommon.info(log, methodName + "获取"+Joystick_name, Logcommon.TAG.INPUT, controllers);
-                    PopPanel.showInfo(mainPage, "扫描：" + controllers.size() + "台", Joystick_name+"信息");
+                    Logcommon.info(log, methodName + "获取" + Joystick_name, Logcommon.TAG.INPUT, controllers);
+                    PopPanel.showInfo(mainPage, "扫描：" + controllers.size() + "台", Joystick_name + "信息");
                     //增加设备信息弹窗复制
                     MainLayout.setInternalContentForMainPage(mainPage, controllers);
                     joystickInfoPop = false;
@@ -91,8 +92,9 @@ public class WorkMain {
 
                 CountDownLatch countDownLatch = new CountDownLatch(controllers.size());
                 countDownLatch.await(REFRESH_MS - 5, TimeUnit.MILLISECONDS);
-                for (Controller controller : controllers) {
-                    controllerExe.execute(new MappingExecute(controller, keyMapping, countDownLatch));
+                for (int i = 0; i < controllers.size(); i++) {
+                    KeyMappingBO keyMappingBO = keyMapping.get(KeyMappingBO.getKey(i + 1));
+                    controllerExe.execute(new MappingExecute(controllers.get(i), keyMappingBO, countDownLatch));
                 }
                 ThreadPoolServer.sleep(REFRESH_MS);//控制刷新频率
             }
@@ -106,12 +108,12 @@ public class WorkMain {
     @Log4j
     private static class MappingExecute implements Runnable {
         private Controller controller;
-        private Map<String, KeyMappingBO> keyMapping;
+        private KeyMappingBO keyMappingBO;
         private CountDownLatch countDownLatch;
 
-        public MappingExecute(Controller controller, final Map<String, KeyMappingBO> keyMapping, CountDownLatch countDownLatch) {
+        public MappingExecute(Controller controller, final KeyMappingBO keyMappingBO, CountDownLatch countDownLatch) {
             this.controller = controller;
-            this.keyMapping = keyMapping;
+            this.keyMappingBO = keyMappingBO;
             this.countDownLatch = countDownLatch;
         }
 
@@ -121,18 +123,18 @@ public class WorkMain {
                 getController().poll();
                 final ControllerBO controllerBO = JInputJoyServer.getControllerBO(getController().getComponents());
                 //Logcommon.info(log, methodName + "监听按键", Logcommon.TAG.INPUT,controllerBO);
-                ControllerBO controllerOld = RECORD_LAST_STATUS.get(controllerBO.getButton_1().getGUID());
+                ControllerBO controllerOld = RECORD_LAST_STATUS.get(keyMappingBO.getButton().getName());
                 if (ObjectUtils.isNotEmpty(controllerOld)) {
                     AnalogCompareBO analogCompareBO = MappingServer.queryDifferentOfAnalog(controllerBO, controllerOld);
                     if (!analogCompareBO.isEmpty()) {//摇杆有变动
-                        MappingServer.exeMapping(analogCompareBO, keyMapping);
+                        MappingServer.exeMapping(analogCompareBO, keyMappingBO);
                     }
                     List<ButtonCompareBO> buttonCompareBOS = MappingServer.queryDifferentOfButton(controllerBO, controllerOld);
                     if (CollectionUtils.isNotEmpty(buttonCompareBOS)) {//按钮有变动
-                        MappingServer.exeMapping(buttonCompareBOS, keyMapping);
+                        MappingServer.exeMapping(buttonCompareBOS, keyMappingBO);
                     }
                 }
-                RECORD_LAST_STATUS.put(controllerBO.getButton_1().getGUID(), controllerBO);
+                RECORD_LAST_STATUS.put(keyMappingBO.getButton().getName(), controllerBO);
 
                 countDownLatch.countDown();
             } catch (Exception e) {

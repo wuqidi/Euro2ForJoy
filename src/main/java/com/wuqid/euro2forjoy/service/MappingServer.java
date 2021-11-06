@@ -23,57 +23,58 @@ import static com.wuqid.euro2forjoy.config.SystemConfig.*;
  */
 @Log4j
 public class MappingServer {
-    private static final Map<String,Thread> key_thread = new ConcurrentHashMap<>();
+    private static final Map<String, Thread> key_thread = new ConcurrentHashMap<>();
 
-    public static void exeMapping(AnalogCompareBO analogCompareBO, Map<String, KeyMappingBO> keyMapping) {
+    public static void exeMapping(AnalogCompareBO analogCompareBO, KeyMappingBO keyMappingBO) {
         String methodName = "执行摇杆映射";
-        String guid = analogCompareBO.getGUID();
-        KeyMappingBO keyMappingBO = keyMapping.get(guid);
         AnalogBO.Direction direction_new = analogCompareBO.getDirection_new();
         AnalogBO.Direction direction_old = analogCompareBO.getDirection_old();
         KeyMappingBO.Analog analog = keyMappingBO.getAnalog();
         String key = analog.getKey(direction_new);//键盘映射按键
         //Logcommon.info(log, methodName, Logcommon.TAG.INPUT, direction_new, direction_old);
-        Logcommon.info(log, methodName + " 键盘：", Logcommon.TAG.OUTPUT, key);
+        //Logcommon.info(log, methodName + " 键盘：", Logcommon.TAG.OUTPUT, key);
         RobotServer.moveAndPress(key);
     }
 
-    public static void exeMapping(List<ButtonCompareBO> buttonCompareBOs, Map<String, KeyMappingBO> keyMapping) {
+    public static void exeMapping(List<ButtonCompareBO> buttonCompareBOs, KeyMappingBO keyMappingBO) {
         String methodName = "执行按键映射";
-        KeyMappingBO keyMappingBO = keyMapping.get(buttonCompareBOs.get(0).getGUID());
         KeyMappingBO.Button button = keyMappingBO.getButton();
-        buttonCompareBOs.forEach(v -> {
-            String key = button.getKey(v.getName());// 键盘映射按键
-            //Logcommon.info(log, methodName, Logcommon.TAG.INPUT, v.isSwitchOff_new(), v.isSwitchOff_old());
-            Logcommon.info(log, methodName + "键盘：", Logcommon.TAG.OUTPUT, key);
-            if (key.contains(ButtonActType.twice.name())) {// 两次识别
-                //通电按键
-                RobotServer.pressATUO(key);
-            } else if (key.contains(ButtonActType.always.name())) {
-                //加油按键
-                if (v.isSwitchOff_new()) {
-                    Thread thread = new Thread(() -> {
-                        while (true){
-                            RobotServer.pressATUO(key);
-                            Logcommon.info(log,methodName, Logcommon.TAG.OUTPUT,"线程操作中...");
-                            try {
-                                Thread.sleep(ALWAYS_TIME);
-                            } catch (Exception e) {
+        try {
+            buttonCompareBOs.forEach(v -> {
+                String key = button.getKey(v.getName());// 键盘映射按键
+                //Logcommon.info(log, methodName, Logcommon.TAG.INPUT, v.isSwitchOff_new(), v.isSwitchOff_old());
+                //Logcommon.info(log, methodName + "键盘：", Logcommon.TAG.OUTPUT, key);
+                if (key.contains(ButtonActType.twice.name())) {// 两次识别
+                    //通电按键
+                    RobotServer.pressATUO(key);
+                } else if (key.contains(ButtonActType.always.name())) {
+                    //加油按键
+                    if (v.isSwitchOff_new()) {
+                        Thread thread = new Thread(() -> {
+                            while (true) {
+                                RobotServer.pressATUO(key);
+                                //Logcommon.info(log, methodName, Logcommon.TAG.OUTPUT, "线程操作中...");
+                                try {
+                                    Thread.sleep(ALWAYS_TIME);
+                                } catch (Exception e) {
+                                }
                             }
+                        });
+                        thread.start();
+                        key_thread.put(key, thread);
+                    } else {
+                        Thread thread = key_thread.get(key);
+                        if (ObjectUtils.isNotEmpty(thread)) {
+                            thread.stop();
                         }
-                    });
-                    thread.start();
-                    key_thread.put(key,thread);
-                } else {
-                    Thread thread = key_thread.get(key);
-                    if(ObjectUtils.isNotEmpty(thread)){
-                        thread.stop();
                     }
+                } else if (v.isSwitchOff_new()) {
+                    RobotServer.moveAndPress(key);
                 }
-            } else if (v.isSwitchOff_new()) {
-                RobotServer.moveAndPress(key);
-            }
-        });
+            });
+        } catch (Exception e) {
+            Logcommon.error(log, methodName, e);
+        }
     }
 
     public static AnalogCompareBO queryDifferentOfAnalog(ControllerBO newCon, ControllerBO oldCon) {

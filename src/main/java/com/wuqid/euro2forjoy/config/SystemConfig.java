@@ -4,8 +4,6 @@ import com.wuqid.euro2forjoy.common.PropertyUtil;
 import lombok.extern.log4j.Log4j;
 
 import java.io.File;
-import java.net.URI;
-import java.net.URISyntaxException;
 
 /**
  * <dl>
@@ -23,20 +21,10 @@ public class SystemConfig {
     public static final int ALWAYS_TIME = 30;//模拟一直按着键 线程执行间隔时间
     public static final int CONTROLLER_NUMS = 2;//控制器数量
     public static final int LOOP_GET_CONTROLLER_SLEEP = 5000;//循环获取控制器间隔
-    public static URI IMG_FILE_URI;
-    public static URI DLL_FILE_URI;
 
-    static {
-        try {
-            DLL_FILE_URI = ClassLoader.getSystemResource("dll").toURI();
-            IMG_FILE_URI = ClassLoader.getSystemResource("img").toURI();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void setInitProperty() throws Exception {
-        PropertyUtil.setSystem("net.java.games.input.librarypath", new File(DLL_FILE_URI).getAbsolutePath());//这里只能设置绝对路径
+    public static void setInitProperty() {
+        //PropertyUtil.setSystem("net.java.games.input.librarypath", new File(DLL_FILE_URI).getAbsolutePath());//这里只能设置绝对路径
+        PropertyUtil.setSystem("net.java.games.input.librarypath", System.getProperty("user.dir")+File.separator+"dll");//这里只能设置绝对路径
         PropertyUtil.setSystem("jinput.loglevel", "FINEST");//java.util.logging.Level
     }
 }

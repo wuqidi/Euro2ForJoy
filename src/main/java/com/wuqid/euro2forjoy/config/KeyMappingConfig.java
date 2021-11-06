@@ -37,7 +37,7 @@ public class KeyMappingConfig {
         String methodName = "获取键盘映射关系";
         Map<String,KeyMappingBO> result = new HashMap<>();
         try {
-            Map<String, Map<String, Map<String,String>>> yml = PropertyUtil.getYml("keymapping.yml");
+            Map<String, Map<String, Map<String,String>>> yml = PropertyUtil.getYml("./keymapping.yml");
             yml.forEach((k, v) -> result.putAll(KeyMappingBO.getInstance(k,v)));
         } catch (Exception e) {
             Logcommon.error(log, methodName, e);
