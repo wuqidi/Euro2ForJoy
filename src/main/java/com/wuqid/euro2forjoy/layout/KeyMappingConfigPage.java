@@ -1,7 +1,6 @@
 package com.wuqid.euro2forjoy.layout;
 
 import com.wuqid.euro2forjoy.pojo.ButtonActType;
-import com.wuqid.euro2forjoy.pojo.ControllerBO;
 import com.wuqid.euro2forjoy.pojo.KeyMappingBO;
 import com.wuqid.euro2forjoy.service.MappingServer;
 import lombok.extern.log4j.Log4j;
@@ -245,53 +244,13 @@ public class KeyMappingConfigPage {
         JPanel line = new JPanel();
         line.setLayout(null);
         line.setFont(new Font("仿宋", Font.ITALIC, 18));
-        line.setBorder(BorderFactory.createLineBorder(Color.red));
+        //line.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         line.setBounds(widthX / 2, num * (lineNameHeight + heightX), width, lineNameHeight);
         JLabel label = new JLabel("     " + lineName);
         label.setBounds(0, 0, lineNameWidth, lineNameHeight);
-        label.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        //label.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         line.add(label);
         return line;
-    }
-
-    private static void setButton2(JPanel panel, ControllerBO controllerBO) {
-        int height = panel.getHeight() - 35;
-        int width = 110;
-        int widthX = 30;
-        JPanel buttonName = new JPanel();
-        buttonName.setLayout(new FlowLayout(FlowLayout.RIGHT, 20, 23));
-        buttonName.setFont(new Font("仿宋", Font.ITALIC, 18));
-        buttonName.setBorder(BorderFactory.createLineBorder(Color.red));
-        buttonName.setBounds(0, 0, width, height);
-        buttonName.add(new JLabel("上[↑]摇杆"));
-        buttonName.add(new JLabel("下[↓]摇杆"));
-        buttonName.add(new JLabel("左[←]摇杆"));
-        buttonName.add(new JLabel("右[→]摇杆"));
-        for (int i = 1; i <= 12; i++) {
-            buttonName.add(new JLabel(String.format("  [%d]号按钮", i)));
-        }
-        panel.add(buttonName);
-
-        JPanel buttonType = new JPanel();
-        buttonType.setLayout(new FlowLayout(FlowLayout.RIGHT, 10, 14));
-        buttonType.setBorder(BorderFactory.createLineBorder(Color.BLUE));
-        buttonType.setBounds(width + widthX, 0, width, height);
-        for (int i = 1; i <= 16; i++) {
-            buttonType.add(getButtonType());
-        }
-        panel.add(buttonType);//按键映射模式 https://docs.oracle.com/javase/tutorial/uiswing/components/combobox.html#uneditable
-
-        JPanel buttonValue = new JPanel();
-        buttonValue.setLayout(new FlowLayout(FlowLayout.RIGHT, 10, 20));
-        buttonValue.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        buttonValue.setBounds(2 * (width + widthX), 0, width, height);
-        panel.add(buttonValue);//todo 按键映射值
-    }
-
-    private static JComboBox getButtonType() {
-        JComboBox cb = new JComboBox(ButtonActType.values());
-        cb.setSelectedIndex(0);
-        return cb;
     }
 
     private static JTextArea getJTextArea(String content) {

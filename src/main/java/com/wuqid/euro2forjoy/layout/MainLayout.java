@@ -2,12 +2,10 @@ package com.wuqid.euro2forjoy.layout;
 
 import com.wuqid.euro2forjoy.common.Logcommon;
 import com.wuqid.euro2forjoy.config.SystemConfig;
-import com.wuqid.euro2forjoy.pojo.ControllerBO;
 import com.wuqid.euro2forjoy.pojo.KeyMappingBO;
 import lombok.Data;
 import lombok.extern.log4j.Log4j;
 import net.java.games.input.Controller;
-import net.java.games.input.JInputJoyServer;
 import org.apache.commons.collections.CollectionUtils;
 
 import javax.swing.*;
@@ -70,14 +68,11 @@ public class MainLayout {
                     Controller controller = controllers.get(i);
                     JPanel panel = new JPanel();
                     panel.setBounds(0, 0, width, height);
-                    panel.setBackground(Color.BLUE);
+                    //panel.setBackground(Color.BLUE);
                     panel.setLayout(null);
-
-                    ControllerBO controllerBO = JInputJoyServer.getControllerBO(controller.getComponents());
                     KeyMappingConfigPage.setKeyMapping(panel, keyMapping.get(KeyMappingBO.getKey(i + 1)));
-
                     jTabbedPane.add(panel);
-                    jTabbedPane.setTitleAt(i, controller.getName() + ":" + i+1 + "号");
+                    jTabbedPane.setTitleAt(i, controller.getName() + ":" + (i+1) + "号");
                 }
                 innerPanel.add(jTabbedPane);
                 mainPage.revalidate();
