@@ -20,6 +20,7 @@ keymapping.yml：摇杆按键的映射规则文件
 
 #打赏链接
 ![avatar](/src/main/resources/img/wx.jpg)
+![avatar](/src/main/resources/img/wx.jpg)
 
 ### 参考资料
 * https://www.cnblogs.com/yangyuqing/p/10481630.html

@@ -1,0 +1,60 @@
+  keymapping.yml
+    dll
+    img#always
+#twice
+#move
+
+#########################一号操作板#########################
+#按钮
+controller1:
+  button:
+    name: "button1"
+    gUID: "8AJto/PJzxG/x0RFU1QAAA=="
+    button_1: "twice_w"
+    button_2: "e"
+    button_3: "twice_f"
+    button_4: "twice_o"
+    button_5: "twice_v"
+    button_6: "twice_u"
+    button_7: "always_enter"
+    button_8: "twice_t"
+    button_9: "x"
+    button_10: "x"
+    button_11: "p"
+    button_12:
+  #摇杆
+  analog:
+    gUID: "4AJto/PJzxG/x0RFU1QAAA=="
+    center:
+    #space
+    up: "space"
+    down: "space"
+    left: "move_left"
+    right: "move_right"
+
+#########################二号操作板#########################
+#按钮
+controller2:
+  button:
+    name: "button2"
+    gUID: ""
+    button_1: "twice_o"
+    button_2: "twice_k"
+    button_3: "twice_s"
+    button_4: "twice_d"
+    button_5: "j"
+    button_6: "k"
+    button_7: "twice_l"
+    button_8: "y"
+    button_9: "z"
+    button_10: "r"
+    button_11: "q"
+    button_12: "a"
+  #摇杆
+  analog:
+    gUID: ""
+    center:
+    up:
+    down:
+    left:
+    right:

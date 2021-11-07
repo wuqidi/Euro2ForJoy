@@ -22,7 +22,7 @@ public class SystemConfig {
     public static final int CONTROLLER_NUMS = 2;//控制器数量
     public static final int LOOP_GET_CONTROLLER_SLEEP = 5000;//循环获取控制器间隔
 
-    public static final String WORK_HOME = "G:\\mygames"+ File.separator;//System.getProperty("user.dir") + File.separator;
+    public static final String WORK_HOME = System.getProperty("user.dir") + File.separator;
 
     public static void setInitProperty() {
         PropertyUtil.setSystem("net.java.games.input.librarypath", WORK_HOME+"dll");//这里只能设置绝对路径
