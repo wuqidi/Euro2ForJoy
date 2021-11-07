@@ -9,6 +9,18 @@
 ## 瞎JB忙
 * 有时间就写点
 
+##使用方式
+```
+下载soft包下所有文件，然后随便存入一个独立的文件夹中。
+例如 G:/mygames/
+dll:识别硬件的运行库
+img:图片 没毒
+keymapping.yml：摇杆按键的映射规则文件
+```
+
+#打赏链接
+![avatar](/src/main/resources/img/wx.jpg)
+
 ### 参考资料
 * https://www.cnblogs.com/yangyuqing/p/10481630.html
 * https://blog.csdn.net/liyuanbhu/article/details/65936340
