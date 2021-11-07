@@ -85,7 +85,7 @@ public class WorkMain {
                     Logcommon.info(log, methodName + "获取" + Joystick_name, Logcommon.TAG.INPUT, controllers);
                     PopPanel.showInfo(mainPage, "扫描：" + controllers.size() + "台", Joystick_name + "信息");
                     //增加设备信息弹窗复制
-                    MainLayout.setInternalContentForMainPage(mainPage, controllers);
+                    MainLayout.setInternalContentForMainPage(mainPage, controllers,keyMapping);
                     joystickInfoPop = false;
                     /* Arrays.stream(controllers).forEach(v -> { PopPanel.showInfo(getJoystickInfo(v), "joystick信息");});*/
                 }

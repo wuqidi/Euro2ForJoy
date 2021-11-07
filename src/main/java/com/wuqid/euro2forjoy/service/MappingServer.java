@@ -1,16 +1,18 @@
 package com.wuqid.euro2forjoy.service;
 
-import com.wuqid.euro2forjoy.pojo.*;
 import com.wuqid.euro2forjoy.common.Logcommon;
+import com.wuqid.euro2forjoy.pojo.*;
 import lombok.extern.log4j.Log4j;
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.wuqid.euro2forjoy.config.SystemConfig.*;
+import static com.wuqid.euro2forjoy.config.SystemConfig.ALWAYS_TIME;
 
 /**
  * <dl>
@@ -131,5 +133,40 @@ public class MappingServer {
         }
         //Logcommon.info(log, methodName, Logcommon.TAG.OUTPUT, result);
         return result;
+    }
+
+    public static String getWord(String configValue){
+        if(StringUtils.isBlank(configValue)){
+            return configValue;
+        }
+        String replace = configValue.replace("_", "");
+        for(ButtonActType tem : ButtonActType.values()){
+            String s = tem.name().toLowerCase(Locale.ROOT);
+            replace = replace.replace(s, "");
+        }
+        return replace;
+    }
+
+    public static ButtonActType getButtonType(String configValue){
+        if(StringUtils.isBlank(configValue) || !configValue.contains("_")){
+            return ButtonActType.def;
+        }
+        String[] split = configValue.split("_");
+        if(split.length>2){
+            return ButtonActType.def;
+        }
+        String s1 = split[0];
+        return ButtonActType.getByTag(s1);
+    }
+
+    public static String updateConfigValue(ButtonActType buttonActType,String word,String configValueOld){
+        if(buttonActType!=null && StringUtils.isNotBlank(word)){
+            return buttonActType.getTag()+"_"+word.toLowerCase(Locale.ROOT);
+        }else if(buttonActType!=null && StringUtils.isBlank(word)){
+            return buttonActType.getTag()+"_"+getWord(configValueOld);
+        }else if(buttonActType==null && StringUtils.isNotBlank(word)){
+            return getButtonType(configValueOld).getTag()+"_"+word.toLowerCase(Locale.ROOT);
+        }
+        return configValueOld;
     }
 }

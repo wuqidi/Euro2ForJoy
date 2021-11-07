@@ -3,6 +3,7 @@ package com.wuqid.euro2forjoy.layout;
 import com.wuqid.euro2forjoy.common.Logcommon;
 import com.wuqid.euro2forjoy.config.SystemConfig;
 import com.wuqid.euro2forjoy.pojo.ControllerBO;
+import com.wuqid.euro2forjoy.pojo.KeyMappingBO;
 import lombok.Data;
 import lombok.extern.log4j.Log4j;
 import net.java.games.input.Controller;
@@ -14,6 +15,7 @@ import javax.swing.event.MouseInputListener;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <dl>
@@ -55,7 +57,7 @@ public class MainLayout {
         return mainPage;
     }
 
-    public static void setInternalContentForMainPage(JFrame mainPage, List<Controller> controllers) {
+    public static void setInternalContentForMainPage(JFrame mainPage, List<Controller> controllers, Map<String, KeyMappingBO> keyMapping) {
         try {
             if (CollectionUtils.isNotEmpty(controllers)) {
                 int widthX = 300;
@@ -68,20 +70,14 @@ public class MainLayout {
                     Controller controller = controllers.get(i);
                     JPanel panel = new JPanel();
                     panel.setBounds(0, 0, width, height);
-                    panel.setFont(new Font("仿宋", Font.ITALIC, 18));
+                    panel.setBackground(Color.BLUE);
                     panel.setLayout(null);
 
                     ControllerBO controllerBO = JInputJoyServer.getControllerBO(controller.getComponents());
-                    setButton(panel, controllerBO);
-
-                   /* String button = controllerBO.getButton_1().getGUID();
-                    String analog = controllerBO.getAnalog().getGUID();
-                    panelRight.add(BorderLayout.WEST, getJTextArea("按键guid：" + button));
-                    panelRight.add(BorderLayout.EAST, getJTextArea("摇杆guid：" + analog));*/
-
+                    KeyMappingConfigPage.setKeyMapping(panel, keyMapping.get(KeyMappingBO.getKey(i + 1)));
 
                     jTabbedPane.add(panel);
-                    jTabbedPane.setTitleAt(i, controller.getName() + ":" + i + "号");
+                    jTabbedPane.setTitleAt(i, controller.getName() + ":" + i+1 + "号");
                 }
                 innerPanel.add(jTabbedPane);
                 mainPage.revalidate();
@@ -92,48 +88,10 @@ public class MainLayout {
         }
     }
 
-    private static void setButton(JPanel panel, ControllerBO controllerBO) {
-        int height = panel.getHeight() - 35;
-        int width = 110;
-        int widthX = 30;
-        JPanel buttonName = new JPanel();
-        buttonName.setLayout(new FlowLayout(FlowLayout.RIGHT, 20, 23));
-        buttonName.setBorder(BorderFactory.createLineBorder(Color.red));
-        buttonName.setBounds(0, 0, width, height);
-
-        buttonName.add(new JLabel("上[↑]摇杆"));
-        buttonName.add(new JLabel("下[↓]摇杆"));
-        buttonName.add(new JLabel("左[←]摇杆"));
-        buttonName.add(new JLabel("右[→]摇杆"));
-
-        for (int i = 1; i <= 12; i++) {
-            buttonName.add(new JLabel(String.format("  [%d]号按钮", i)));
-        }
-        panel.add(buttonName);
-
-        JPanel buttonType = new JPanel();
-        buttonType.setLayout(new FlowLayout(FlowLayout.RIGHT, 10, 20));
-        buttonType.setBorder(BorderFactory.createLineBorder(Color.BLUE));
-        buttonType.setBounds(width + widthX, 0, width, height);
-
-        panel.add(buttonType);//todo 按键映射模式
-
-        JPanel buttonValue = new JPanel();
-        buttonValue.setLayout(new FlowLayout(FlowLayout.RIGHT, 10, 20));
-        buttonValue.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        buttonValue.setBounds(2 * (width + widthX), 0, width, height);
-
-        panel.add(buttonValue);//todo 按键映射值
-    }
 
 
-    private static JTextArea getJTextArea(String content) {
-        JTextArea textArea = new JTextArea(content, 1, 35);
-        textArea.setLineWrap(true);    //设置文本域中的文本为自动换行
-        textArea.setFont(new Font("楷体", Font.BOLD, 16));    //修改字体样式
-        textArea.setBackground(Color.CYAN);    //设置背景色
-        return textArea;
-    }
+
+
 
     private static void setMenuBar(JFrame frame) {
         JMenuBar mb = new JMenuBar();

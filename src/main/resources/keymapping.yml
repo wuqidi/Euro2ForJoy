@@ -4,7 +4,7 @@
 
 #########################一号操作板#########################
 #按钮
-controller2:
+controller1:
   button:
     name: "button1"
     gUID: "8AJto/PJzxG/x0RFU1QAAA=="
@@ -32,7 +32,7 @@ controller2:
 
 #########################二号操作板#########################
 #按钮
-controller1:
+controller2:
   button:
     name: "button2"
     gUID: ""

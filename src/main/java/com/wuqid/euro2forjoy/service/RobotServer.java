@@ -125,11 +125,7 @@ public class RobotServer {
 
 
     private static Integer getKeyEvent(String key) {
-        String replace = key.replace("_", "");
-        for(ButtonActType tem : ButtonActType.values()){
-            String s = tem.name().toLowerCase(Locale.ROOT);
-            replace = replace.replace(s, "");
-        }
+        String replace = MappingServer.getWord(key);
         switch (replace.toLowerCase(Locale.ROOT)) {
             case "a":
                 return KeyEvent.VK_A;
