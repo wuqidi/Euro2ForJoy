@@ -7,9 +7,9 @@
 >* 映射文件:resources/keymapping.yml
 
 ## 瞎JB忙
-* 有时间就写点
+>* 有时间就写点
 
-##使用方式
+## 使用方式
 ```
 下载soft包下所有文件，然后随便存入一个独立的文件夹中。
 例如 G:/mygames/
@@ -18,9 +18,9 @@ img:图片 没毒
 keymapping.yml：摇杆按键的映射规则文件
 ```
 
-#打赏链接
+# 打赏链接
 ![avatar](/src/main/resources/img/wx.jpg)
-![avatar](/src/main/resources/img/wx.jpg)
+![avatar](/src/main/resources/img/zfb.jpg)
 
 ### 参考资料
 * https://www.cnblogs.com/yangyuqing/p/10481630.html
@@ -32,5 +32,5 @@ keymapping.yml：摇杆按键的映射规则文件
 * https://github.com/ihmcrobotics/jinput
 * https://blog.csdn.net/xingjiarong/article/details/38688537
 
-###抱怨
+### 抱怨
 * 相同设备GUID相同！！！！！我TM怎么区分？真是一下回到解放前，怪自己啊~
